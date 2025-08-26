@@ -71,11 +71,9 @@ Deep Learning models, especially CNNs with deeper architectures, outperform trad
 
 ## 👨‍💻 Authors
 
-- **Punna Varshith** – Reg. No: 126158037 – B.Tech CSE (IoT & Automation)
-- Gandla Bhanu Praneeth – Reg. No: 126158020
-- Alluru Naga Sashi Chaitanya – Reg. No: 126158063
+- **Rohan Singam** – Reg. No: 126003250 – B.Tech CSE 
 
-> Project guided by **Dr. Markkandeyan S**, Senior Assistant Professor, School of Computing, SASTRA University
+
 
 ---
 
