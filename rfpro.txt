@@ -1,0 +1,87 @@
+# Install imbalanced-learn (if not installed)
+!pip install imbalanced-learn
+
+# Import necessary libraries
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# For train-test splitting
+from sklearn.model_selection import train_test_split
+
+# Random Forest classifier
+from sklearn.ensemble import RandomForestClassifier
+
+# Performance metrics
+from sklearn.metrics import classification_report, confusion_matrix
+
+# Handling class imbalance
+from imblearn.over_sampling import SMOTE
+
+import pandas as pd
+df=pd.read_csv('/content/creditcard.csv')
+
+# Display dataset info
+print("Dataset Overview:")
+print(df.head())
+
+# Define feature columns and target column
+target_column = 'Class'  # Change this to your actual target column name
+X = df.drop(columns=[target_column])  # Features
+y = df[target_column]  # Target
+
+# Check class distribution
+print("\nClass distribution before balancing:")
+print(y.value_counts())
+
+# Split dataset
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+
+# Apply SMOTE to balance the classes
+smote = SMOTE(random_state=42)
+X_train_resampled, y_train_resampled = smote.fit_resample(X_train, y_train)
+
+# Check new class distribution
+print("\nClass distribution after SMOTE:")
+print(pd.Series(y_train_resampled).value_counts())
+
+# Train a Random Forest model
+rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
+rf_model.fit(X_train_resampled, y_train_resampled)
+
+# Predictions
+y_pred = rf_model.predict(X_test)
+
+# Model evaluation
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred))
+
+# Confusion matrix
+plt.figure(figsize=(6,4))
+sns.heatmap(confusion_matrix(y_test, y_pred), annot=True, fmt='d', cmap='Blues', xticklabels=['Class 0', 'Class 1'], yticklabels=['Class 0', 'Class 1'])
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.title("Confusion Matrix")
+plt.show()
+
+from sklearn.metrics import f1_score,accuracy_score
+print("accuracy score:",accuracy_score(y_test,y_pred))
+print("f1 score:",f1_score(y_test,y_pred))
+
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00     56864
+           1       0.83      0.83      0.83        98
+
+    accuracy                           1.00     56962
+   macro avg       0.91      0.91      0.91     56962
+weighted avg       1.00      1.00      1.00     56962
+
+accuracy score: 0.999403110845827
+f1 score: 0.826530612244898
+
+confusion matrix: [[56847    17]
+ [   17    81]]
